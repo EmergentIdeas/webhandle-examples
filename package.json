@@ -1,0 +1,47 @@
+{
+	"name": "webhandle-examples",
+	"version": "1.0.0",
+	"description": "Examples of the usage of the Webhandle project",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"bg": "parallelshell 'npm run dev-less-watch' 'npm run dev-client-js-watch'",
+		"client-js-build": "browserify client-js/pages.js > public/js/pages.js; browserify client-js/editor.js > public/js/editor.js; browserify client-js/app.js > public/js/app.js",
+		"client-js-compress": "uglifyjs public/js/pages.js -o public/js/pages.min.js -c --source-map url=public/js/pages.min.js.map; uglifyjs public/js/editor.js -o public/js/editor.min.js -c --source-map url=public/js/editor.min.js.map; uglifyjs public/js/app.js -o public/js/app.min.js -c --source-map url=public/js/app.min.js.map",
+		"debug": "node --inspect --inspect-brk ./web-server.js",
+		"dev-client-js-watch": "onchange 'client-js/**/*.js' -- npm run client-js-build",
+		"dev-less-watch": "onchange 'less/**/*.less' -- npm run less-build",
+		"dev-server-js-watch": "onchange 'server-js/**/*.js' -- pm2 restart $npm_package_name-web",
+		"env-test": "echo $npm_package_name-web",
+		"less-build": "lessc less/pages.less > public/css/pages.css | lessc less/editor.less > public/css/editor.css; lessc less/app.less > public/css/app.css",
+		"less-compress": "uglifycss public/css/pages.css > public/css/pages.min.css; uglifycss public/css/editor.css > public/css/editor.min.css; uglifycss public/css/app.css > public/css/app.min.css",
+		"pm2-bg": "parallelshell 'npm run dev-less-watch' 'npm run dev-client-js-watch' 'npm run dev-server-js-watch'",
+		"start": "node ./web-server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/EmergentIdeas/webhandle-examples.git"
+	},
+	"keywords": [
+		"webhandle",
+		"examples"
+	],
+	"author": "Dan Kolz (EmergentIdeas)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/EmergentIdeas/webhandle-examples/issues"
+	},
+	"homepage": "https://github.com/EmergentIdeas/webhandle-examples#readme",
+	"dependencies": {
+		"webhandle-site-setup": "^1.0.1",
+		"express": "^4.16.2",
+		"webhandle": "^1.0.1"
+	},
+	"devDependencies": {
+		"browserify": "^14.4.0",
+		"less": "^2.7.2",
+		"onchange": "^3.2.1",
+		"parallelshell": "^3.0.1",
+		"uglify-js": "^3.0.24"
+	}
+}
